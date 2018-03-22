@@ -291,7 +291,8 @@ sgd.big.matrix <- function(x, y, model,
 # Helper functions
 ################################################################################
 
-fit <- function(x, y, model,
+fit <- function(x, y,
+                model,
                 model.control,
                 sgd.control) {
   #time_start <- proc.time()[3] # TODO timer only starts here
@@ -312,7 +313,18 @@ fit <- function(x, y, model,
     }
   }
 
-  dataset <- list(X=x, Y=as.matrix(y))
+  w = model.control[['weights']]
+
+  if (is.null(w)) {
+    w = rep(1, length(y))
+  } else {
+    if (!is.numeric(w) || length(w) != length(y)) {
+      stop("weights must be a numeric vector with the same number of elements as y")
+    }
+  }
+   
+
+  dataset <- list(X=x, Y=as.matrix(y), W=as.matrix(w))
   if ('big.matrix' %in% class(x)) {
     dataset$big <- TRUE
     dataset[["bigmat"]] <- x@address

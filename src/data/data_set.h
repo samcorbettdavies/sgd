@@ -20,8 +20,8 @@ class data_set {
    * @param shuffle  whether to shuffle data set or not
    */
 public:
-  data_set(const SEXP& xpMat, const mat& Xx, const mat& Yy, unsigned n_passes,
-    bool big, bool shuffle) : xpMat_(xpMat), Y(Yy), big(big), shuffle_(shuffle) {
+  data_set(const SEXP& xpMat, const mat& Xx, const mat& Yy, const mat& Ww, unsigned n_passes,
+    bool big, bool shuffle) : xpMat_(xpMat), Y(Yy), W(Ww), big(big), shuffle_(shuffle) {
     if (!big) {
       X = Xx;
       n_samples = X.n_rows;
@@ -57,11 +57,13 @@ public:
       }
     }
     double yt = Y(t);
-    return data_point(xt, yt, t);
+    double wt = W(t);
+    return data_point(xt, yt, t, wt);
   }
 
   mat X;
   mat Y;
+  mat W;
   bool big;
   unsigned n_samples;
   unsigned n_features;

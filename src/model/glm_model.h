@@ -42,8 +42,10 @@ public:
   mat gradient(unsigned t, const mat& theta_old, const data_set& data)
     const {
     data_point data_pt = data.get_data_point(t);
-    return ((data_pt.y - h_transfer(dot(data_pt.x, theta_old))) *
-      data_pt.x).t() - gradient_penalty(theta_old);
+    
+    // % is elementwise multiplication operator
+    return data_pt.w % (((data_pt.y - h_transfer(dot(data_pt.x, theta_old))) *
+      data_pt.x).t() - gradient_penalty(theta_old));
   }
 
   double g_link(double u) const {

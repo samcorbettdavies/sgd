@@ -43,9 +43,22 @@ public:
     const {
     data_point data_pt = data.get_data_point(t);
     
-    // % is elementwise multiplication operator
-    return data_pt.w % (((data_pt.y - h_transfer(dot(data_pt.x, theta_old))) *
+    mat grad = (((data_pt.y - h_transfer(dot(data_pt.x, theta_old))) *
       data_pt.x).t() - gradient_penalty(theta_old));
+
+    if (t == 9) {
+      Rcpp::Rcout << grad << std::endl << std::endl;
+    }
+
+    grad = grad * data_pt.w;
+
+    if (t == 9) {
+      Rcpp::Rcout << grad << std::endl;
+    }
+
+
+    return grad;
+
   }
 
   double g_link(double u) const {
@@ -91,10 +104,10 @@ public:
   // Functions for implicit update
   double scale_factor(double ksi, double at, const data_point& data_pt, const
     mat& theta_old, double normx) const {
-    return data_pt.y - h_transfer(
+    return (data_pt.y - h_transfer(
       dot(theta_old, data_pt.x) -
       at * dot(gradient_penalty(theta_old), data_pt.x) +
-      ksi * normx);
+      ksi * normx)) * data_pt.w;
   }
 
   double scale_factor_first_deriv(double ksi, double at, const data_point&
@@ -102,7 +115,7 @@ public:
     return h_first_deriv(
       dot(theta_old, data_pt.x) -
       at * dot(gradient_penalty(theta_old), data_pt.x) +
-      ksi * normx) * normx;
+      ksi * normx) * normx * data_pt.w;
   }
 
   double scale_factor_second_deriv(double ksi, double at, const data_point&
@@ -110,7 +123,7 @@ public:
     return h_second_deriv(
       dot(theta_old, data_pt.x) -
       at * dot(gradient_penalty(theta_old), data_pt.x) +
-      ksi * normx) * normx * normx;
+      ksi * normx) * normx * normx * data_pt.w;
   }
 
 private:

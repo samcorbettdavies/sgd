@@ -30,6 +30,13 @@ public:
       n_samples = xpMat_->nrow();
       n_features = xpMat_->ncol();
     }
+
+    if (Ww(0) == 1) {
+      Rcpp::Rcout << "Weights are ones" << std::endl;
+    } else {
+      Rcpp::Rcout << "Weights are specified" << std::endl;
+    }
+
     if (shuffle_) {
       idxvec_ = std::vector<unsigned>(n_samples*n_passes);
       for (unsigned i = 0; i < n_passes; ++i) {

@@ -188,6 +188,8 @@ Rcpp::List run(const data_set& data, MODEL& model, SGD& sgd) {
   bool converged = false;
   if (sgd.verbose()) {
     Rcpp::Rcout << "Stochastic gradient method: " << sgd.name() << std::endl;
+    Rcpp::Rcout << "Compiled on: " << __DATE__ << " " << __TIME__ << std::endl;
+
     Rcpp::Rcout << "SGD Start!" << std::endl;
   }
   for (unsigned t = 1; do_more_iterations; ++t) {
@@ -211,14 +213,16 @@ Rcpp::List run(const data_set& data, MODEL& model, SGD& sgd) {
     }
 
     // Check if satisfy convergence threshold.
-    if (averaging) {
-      converged = sgd.check_convergence(theta_new_ave, theta_old_ave);
-    } else {
-      converged = sgd.check_convergence(theta_new, theta_old);
-    }
-    if (converged) {
-      sgd.end_early();
-      do_more_iterations = false;
+    if (data.get_data_point(t).w != 0) {
+      if (averaging) {
+        converged = sgd.check_convergence(theta_new_ave, theta_old_ave);
+      } else {
+        converged = sgd.check_convergence(theta_new, theta_old);
+      }
+      if (converged) {
+        sgd.end_early();
+        do_more_iterations = false;
+      }
     }
     // Stop if hit maximum number of iterations.
     if (t == max_iters) {

@@ -295,6 +295,8 @@ fit <- function(x, y,
                 model,
                 model.control,
                 sgd.control) {
+  print('This is experimental!')
+
   #time_start <- proc.time()[3] # TODO timer only starts here
   # TODO
   if (model == "gmm") {
@@ -320,6 +322,9 @@ fit <- function(x, y,
   } else {
     if (!is.numeric(w) || length(w) != length(y)) {
       stop("weights must be a numeric vector with the same number of elements as y")
+    }
+    if (any(w==0)) {
+      print("rows have zero weight, sgd might terminate early.\nConsider using pass=TRUE")
     }
   }
    
@@ -420,6 +425,7 @@ valid_model_control <- function(model, model.control=list(...), ...) {
     return(list(
       name=model,
       family=control.family,
+      weights=model.control$weights,
       rank=control.rank,
       trace=control.trace,
       deviance=control.deviance,

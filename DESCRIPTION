@@ -1,7 +1,7 @@
 Package: sgd
 Type: Package
 Title: Stochastic Gradient Descent for Scalable Estimation
-Version: 1.1
+Version: 1.1000001
 Authors@R: c(
     person("Dustin", "Tran", email = "dustin@cs.columbia.edu", role = c("aut", "cre")),
     person("Panos", "Toulis", role = "aut"),

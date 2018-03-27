@@ -23,6 +23,7 @@
 #'       family functions.)}
 #'     \item{\code{rank} (\code{"glm"})}{logical. Should the rank of the design matrix
 #'       be checked?}
+#'     \item{\code{weights} (\code{"glm"})}{numeric. Weighting for each row in design matrix.}
 #'     \item{\code{fn} (\code{"gmm"})}{a function \eqn{g(\theta,x)} which returns a
 #'       \eqn{k}-vector corresponding to the \eqn{k} moment conditions. It is a
 #'       required argument if \code{gr} not specified.}

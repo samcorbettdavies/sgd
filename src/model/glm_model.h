@@ -44,17 +44,7 @@ public:
     data_point data_pt = data.get_data_point(t);
     
     mat grad = (((data_pt.y - h_transfer(dot(data_pt.x, theta_old))) *
-      data_pt.x).t() - gradient_penalty(theta_old));
-
-    if (t == 9) {
-      Rcpp::Rcout << grad << std::endl << std::endl;
-    }
-
-    grad = grad * data_pt.w;
-
-    if (t == 9) {
-      Rcpp::Rcout << grad << std::endl;
-    }
+      data_pt.x).t() - gradient_penalty(theta_old)) * data_pt.w;
 
 
     return grad;

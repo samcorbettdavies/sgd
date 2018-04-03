@@ -296,7 +296,6 @@ fit <- function(x, y,
                 model,
                 model.control,
                 sgd.control) {
-  print('This is experimental!')
 
   #time_start <- proc.time()[3] # TODO timer only starts here
   # TODO
